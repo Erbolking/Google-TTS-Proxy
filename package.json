@@ -1,5 +1,5 @@
 {
-  "name": "TTSProxy",
+  "name": "GTP",
   "version": "1.0.0",
   "private": true,
   "description": "Intelligent CORS Proxy for Google TTS",
@@ -12,8 +12,7 @@
   "license": "Commercial",
   "dependencies": {
     "request": "latest",
-    "socks5-https-client": "latest",
-    "q": "latest"
+    "socks5-https-client": "latest"
   },
   "devDependencies": {
     "chai": "^3.5.0",
