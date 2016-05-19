@@ -1,7 +1,9 @@
 var http = require('http'),
     proxy = require('./src/proxy'),
-    port = process.env.PORT || 3000,
     exec = require('child_process').exec,
+    fs = require('fs'),
+    path = require('path'),
+    port = process.env.PORT || 3000,
     torContainer = process.env.TOR_CONTAINER || 'tor',
     timeout = 25000,
     maxAttempts = 20,
@@ -83,14 +85,25 @@ http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', false);
 
-    // set timeout
-    res.setTimeout(timeout);
+    // server crossDomain.xml
+    if (req.url === '/crossdomain.xml') {
+        fs.readFile('.' + req.url, (error, content) => {
+            if (!error) {
+                res.writeHead(200, {'Content-Type': 'text/xml'});
+                res.end(content, 'utf-8');
+            }
+        });
+    } else {
+        // set timeout
+        res.setTimeout(timeout);
 
-    try {
-        makeRequest(res, req.url);
-    } catch (error) {
-        sendJSON(res, error.message);
+        try {
+            makeRequest(res, req.url);
+        } catch (error) {
+            sendJSON(res, error.message);
+        }
     }
+
 }).listen(port);
 
 console.log('listening ' + port);

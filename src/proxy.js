@@ -9,7 +9,7 @@ var request = require('request'),
     url = require('url'),
     torHost = process.env.TOR_HOST || 'localhost',
     torPort = process.env.TOR_PORT || 9050,
-    ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob';
+    ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&rate=22050&client=tw-ob';
 
 /**
  * Calls specified url using TOR
