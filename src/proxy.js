@@ -29,7 +29,7 @@ function call(uri, useTor) {
         throw new Error('Please specify a text to speech');
     }
 
-    if (!query['l'] || !/^\w{2}_\w{2}$/.test(query['l'])) {
+    if (!query['l'] || !/^\w{2}[\_\-]\w{2}$/.test(query['l'])) {
         throw new Error('Please specify a valid locale');
     }
 
