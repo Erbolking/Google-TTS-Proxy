@@ -30,13 +30,15 @@ function makeRequest(res, url, useTor) {
 
                 // reset attempts;
                 delete attempts[url];
-            } else {
+            } else if ([503, 302].indexOf(proxyRes.statusCode) >= 0) {
                 sendFallBackRequest(res, url, useTor);
+            } else {
+                sendJSON(res, 'Invalid Request');
             }
         })
         .on('error', (error) => {
             console.log(error);
-            sendFallBackRequest(res, url, useTor);
+            sendJSON(res, 'Invalid Request');
         });
 }
 
@@ -86,8 +88,8 @@ http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Credentials', false);
 
     // server crossDomain.xml
-    if (req.url === '/crossdomain.xml') {
-        fs.readFile('.' + req.url, (error, content) => {
+    if (req.url.indexOf('/crossdomain.xml') > 0) {
+        fs.readFile('./crossdomain.xml', (error, content) => {
             if (!error) {
                 res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(content, 'utf-8');
