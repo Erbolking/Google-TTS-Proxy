@@ -2,6 +2,7 @@ var http = require('http'),
     proxy = require('./src/proxy'),
     port = process.env.PORT || 3000,
     exec = require('child_process').exec,
+    torContainer = process.env.TOR_CONTAINER || 'tor',
     timeout = 25000,
     maxAttempts = 20,
     attempts = {};
@@ -55,7 +56,8 @@ function sendFallBackRequest(res, url, isTorAlreadyUsed) {
     // if we already used TOR change IP address
     if (isTorAlreadyUsed) {
         console.log('ip changed');
-        exec('sudo killall -HUP tor');
+        exec('docker restart ' + torContainer);
+        //exec('sudo killall -HUP tor');
     }
 
     // send request using TOP
