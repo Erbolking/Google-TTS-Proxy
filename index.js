@@ -38,7 +38,12 @@ function makeRequest(res, url, useTor) {
         })
         .on('error', (error) => {
             console.log(error);
-            sendJSON(res, 'Invalid Request');
+            if (error.code === 'ECONNREFUSED' && error.port === (process.env.TOR_PORT || 9050)) {
+                // seems to be that TOR is down try to reload it
+                sendFallBackRequest(res, url, useTor);
+            } else {
+                sendJSON(res, 'Invalid Request');
+            }
         });
 }
 
