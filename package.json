@@ -1,0 +1,22 @@
+{
+  "name": "TTSProxy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Intelligent CORS Proxy for Google TTS",
+  "main": "src/cors.js",
+  "scripts": {
+    "start": "node src/proxy.js",
+    "test": "mocha"
+  },
+  "author": "Transparent Language, Inc.",
+  "license": "Commercial",
+  "dependencies": {
+    "request": "latest",
+    "socks5-https-client": "latest",
+    "q": "latest"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  }
+}
