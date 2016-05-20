@@ -27,6 +27,8 @@ function call(uri, useTor) {
 
     if (!query['q']) {
         throw new Error('Please specify a text to speech');
+    } else {
+        query['q'] = encodeURIComponent(query['q']);
     }
 
     if (!query['l'] || !/^\w{2}[\_\-]\w{2}$/.test(query['l'])) {
