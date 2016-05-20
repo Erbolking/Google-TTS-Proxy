@@ -93,7 +93,7 @@ http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Credentials', false);
 
     // server crossDomain.xml
-    if (req.url.indexOf('/crossdomain.xml') > 0) {
+    if (req.url.indexOf('/crossdomain.xml') >= 0) {
         fs.readFile('./crossdomain.xml', (error, content) => {
             if (!error) {
                 res.writeHead(200, {'Content-Type': 'text/xml'});
