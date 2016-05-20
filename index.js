@@ -90,17 +90,25 @@ function sendJSON(res, json) {
 http.createServer((req, res) => {
     // set cross origin headers
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Credentials', false);
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
 
-    // server crossDomain.xml
-    if (req.url.indexOf('/crossdomain.xml') >= 0) {
+    // handle OPTIONS
+    if ('OPTIONS' === req.method) {
+        res.statusCode = 204;
+        res.end();
+    }
+    // handle crossDomain.xml
+    else if (req.url.indexOf('/crossdomain.xml') >= 0) {
         fs.readFile('./crossdomain.xml', (error, content) => {
             if (!error) {
                 res.writeHead(200, {'Content-Type': 'text/xml'});
                 res.end(content, 'utf-8');
             }
         });
-    } else {
+    }
+    // handle GET
+    else if ('GET' === req.method) {
         // set timeout
         res.setTimeout(timeout);
 
@@ -109,6 +117,28 @@ http.createServer((req, res) => {
         } catch (error) {
             sendJSON(res, error.message);
         }
+    }
+    // handle POST
+    else if ('POST' === req.method) {
+        var body = '?';
+        req.on('data', function (data) {
+            body += data;
+
+            // 1mb really?
+            if (body.length > 1e6) {
+                req.connection.destroy();
+            }
+        });
+        req.on('end', function () {
+            // set timeout
+            res.setTimeout(timeout);
+
+            try {
+                makeRequest(res, body);
+            } catch (error) {
+                sendJSON(res, error.message);
+            }
+        });
     }
 
 }).listen(port);
