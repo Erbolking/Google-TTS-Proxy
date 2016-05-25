@@ -78,9 +78,11 @@ function sendFallBackRequest(res, url, isTorAlreadyUsed) {
  * Sends json to server
  * @param {object} res
  * @param {*} json
+ * @param {number} [status]
  */
-function sendJSON(res, json) {
+function sendJSON(res, json, status) {
     res.setHeader('Content-Type', 'application/json');
+    res.statusCode = status || 400;
     res.end(JSON.stringify({
         error: json
     }));
